@@ -1,0 +1,109 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+    public:
+        int val;
+        Node *left;
+        Node *right;
+    Node(int val)
+    {
+        this->val = val;
+        this->left = NULL;
+        this->right = NULL;
+    }
+};
+
+Node* input_tree()
+{
+    int val;
+    cin >> val;
+    Node* root;
+    if(val == -1) root = NULL;
+    else root = new Node(val);
+    
+    queue<Node*>q ;
+    if(root != NULL) q.push(root);
+
+    while(!q.empty())
+    {
+        Node* p = q.front(); // root ber kora
+        q.pop();
+
+        int l ,r; // input 2 node
+        cin >> l >> r;
+        Node *myleft ,*myright;
+
+        if(l == -1) myleft = NULL; // oi node er kaj
+        else myleft = new Node(l);
+
+        if(r == -1) myright = NULL;
+        else myright = new Node(r);
+
+
+        p->left = myleft;  //connetion
+        p->right = myright;
+
+        if(p->left)
+           q.push(p->left);
+        if(p->right)
+           q.push(p->right);   
+
+    }
+    return root;
+}
+
+
+
+
+int main()
+{
+    Node* root = input_tree();
+    //left_order(root);
+    //left node _ left outer tree
+
+    //left part
+    stack<int>st;
+    if(root->left)
+    {
+        Node* tmp = root->left;
+        while(tmp)
+        {
+            st.push(tmp->val);
+            if(tmp->left)
+                tmp = tmp->left;
+            else 
+                tmp = tmp->right;
+        }
+        while (!st.empty())
+        {
+            cout << st.top()<< " ";
+            st.pop();
+        }
+    }   
+    
+    //root part
+    cout << root->val << " ";
+
+    //right part
+    if(root->right)
+    {
+        Node* tmp2 = root->right;
+        while(tmp2)
+        {
+            cout << tmp2->val<< " ";
+            if(tmp2->right)
+                tmp2 = tmp2->right;
+            else 
+                tmp2 = tmp2->left;
+        }
+        while (!st.empty())
+        {
+            cout << st.top()<< " ";
+            st.pop();
+        }
+
+    }
+}
+
